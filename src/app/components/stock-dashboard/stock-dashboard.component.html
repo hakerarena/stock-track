@@ -1,0 +1,83 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Stock Tracker Dashboard</h1>
+    <div class="dashboard-summary" *ngIf="watchedStocks.length > 0">
+      <div class="summary-card">
+        <h3>Total Portfolio Value</h3>
+        <p class="value">${{ getTotalValue().toFixed(2) }}</p>
+      </div>
+      <div class="summary-card">
+        <h3>Total Change</h3>
+        <p
+          class="change"
+          [class.positive]="getTotalChange() >= 0"
+          [class.negative]="getTotalChange() < 0"
+        >
+          {{ getTotalChange() >= 0 ? "+" : "" }}${{
+            getTotalChange().toFixed(2)
+          }}
+          ({{ getTotalChangePercent().toFixed(2) }}%)
+        </p>
+      </div>
+    </div>
+    <div class="dashboard-actions">
+      <button
+        class="btn btn-primary"
+        (click)="refreshAllStocks()"
+        [disabled]="isLoading || watchedStocks.length === 0"
+      >
+        <span *ngIf="isLoading">Refreshing...</span>
+        <span *ngIf="!isLoading">Refresh All</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="search-section">
+    <app-stock-search (stockAdded)="onStockAdded($event)"></app-stock-search>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    <div class="alert alert-error">
+      {{ error }}
+      <button class="btn-close" (click)="error = null">×</button>
+    </div>
+  </div>
+
+  <div class="stocks-grid" *ngIf="watchedStocks.length > 0; else noStocks">
+    <app-stock-card
+      *ngFor="let stock of watchedStocks; trackBy: trackBySymbol"
+      [stock]="stock"
+      (removeStock)="onRemoveStock($event)"
+      (refreshStock)="onRefreshStock($event)"
+    >
+    </app-stock-card>
+  </div>
+
+  <ng-template #noStocks>
+    <div class="no-stocks">
+      <div class="no-stocks-content">
+        <h2>No Stocks in Watchlist</h2>
+        <p>
+          Search for stocks above to add them to your watchlist and start
+          tracking their performance.
+        </p>
+        <div class="popular-stocks">
+          <h3>Popular Stocks:</h3>
+          <div class="stock-suggestions">
+            <button
+              *ngFor="let symbol of ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN']"
+              class="btn btn-outline"
+              (click)="onRefreshStock(symbol)"
+            >
+              {{ symbol }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+</div>

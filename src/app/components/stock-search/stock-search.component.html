@@ -1,0 +1,94 @@
+<div class="stock-search">
+  <div class="search-container">
+    <form (ngSubmit)="onSearchFormSubmit()" class="search-form">
+      <div class="search-input-group">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          (input)="onSearchInput()"
+          placeholder="Search stocks by symbol or company name (e.g., AAPL, Apple)"
+          class="search-input"
+          [class.loading]="isSearching"
+        />
+        <button
+          type="button"
+          *ngIf="searchTerm"
+          (click)="clearSearch()"
+          class="btn-clear"
+        >
+          ✕
+        </button>
+        <button type="submit" class="btn-search" [disabled]="isAddingStock">
+          <span *ngIf="isAddingStock">Adding...</span>
+          <span *ngIf="!isAddingStock">Add</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="search-status" *ngIf="isSearching">
+      <div class="searching-indicator">
+        <div class="spinner-small"></div>
+        <span>Searching...</span>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+      <div class="alert alert-error">
+        {{ error }}
+      </div>
+    </div>
+
+    <div
+      class="search-results"
+      *ngIf="searchResults.length > 0 && !isSearching"
+    >
+      <div class="results-header">
+        <h4>Search Results:</h4>
+      </div>
+      <div class="results-list">
+        <div
+          *ngFor="let result of searchResults; let i = index"
+          class="result-item"
+          [class.loading]="isAddingStock"
+        >
+          <div class="result-info">
+            <div class="result-symbol">{{ result["1. symbol"] }}</div>
+            <div class="result-name">{{ result["2. name"] }}</div>
+            <div class="result-meta">
+              <span class="result-type">{{ getResultType(result) }}</span>
+              <span class="result-region">{{ getResultRegion(result) }}</span>
+            </div>
+          </div>
+          <button
+            class="btn btn-add"
+            (click)="addStock(result['1. symbol'])"
+            [disabled]="isAddingStock"
+          >
+            <span *ngIf="isAddingStock">Adding...</span>
+            <span *ngIf="!isAddingStock">+ Add</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="popular-stocks"
+    *ngIf="searchTerm.length === 0 && searchResults.length === 0"
+  >
+    <h4>Popular Stocks:</h4>
+    <div class="popular-stocks-grid">
+      <button
+        *ngFor="let symbol of popularStocks"
+        class="btn btn-outline popular-stock"
+        (click)="addPopularStock(symbol)"
+        [disabled]="isAddingStock"
+      >
+        <span class="symbol">{{ symbol }}</span>
+        <span class="add-icon" *ngIf="!isAddingStock">+</span>
+        <span class="loading-text" *ngIf="isAddingStock">...</span>
+      </button>
+    </div>
+  </div>
+</div>

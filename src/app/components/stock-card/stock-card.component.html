@@ -1,0 +1,49 @@
+<div class="stock-card">
+  <div class="stock-header">
+    <div class="stock-info">
+      <h3 class="stock-symbol">{{ stock.symbol }}</h3>
+      <p class="stock-name">{{ stock.name }}</p>
+    </div>
+    <div class="stock-actions">
+      <button class="btn-icon" (click)="onRefresh()" title="Refresh">🔄</button>
+      <button class="btn-icon btn-remove" (click)="onRemove()" title="Remove">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <div class="stock-price">
+    <div class="current-price">
+      <span class="price">${{ formatNumber(stock.price) }}</span>
+    </div>
+    <div class="price-change" [class]="getChangeClass()">
+      <span class="change-icon">{{ getChangeIcon() }}</span>
+      <span class="change-value">
+        {{ stock.change >= 0 ? "+" : "" }}${{ formatNumber(stock.change) }}
+      </span>
+      <span class="change-percent">
+        ({{ stock.changePercent >= 0 ? "+" : ""
+        }}{{ formatNumber(stock.changePercent) }}%)
+      </span>
+    </div>
+  </div>
+
+  <div class="stock-details">
+    <div class="detail-row">
+      <span class="label">Previous Close:</span>
+      <span class="value">${{ formatNumber(stock.previousClose) }}</span>
+    </div>
+    <div class="detail-row" *ngIf="stock.volume">
+      <span class="label">Volume:</span>
+      <span class="value">{{ formatVolume(stock.volume) }}</span>
+    </div>
+    <div class="detail-row" *ngIf="stock.marketCap">
+      <span class="label">Market Cap:</span>
+      <span class="value">{{ formatMarketCap(stock.marketCap) }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Last Updated:</span>
+      <span class="value">{{ stock.lastUpdated | date : "short" }}</span>
+    </div>
+  </div>
+</div>

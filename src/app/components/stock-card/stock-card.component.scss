@@ -1,0 +1,150 @@
+.stock-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    box-shadow: var(--box-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .stock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    .stock-info {
+      flex-grow: 1;
+
+      .stock-symbol {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+        margin-bottom: 0.25rem;
+      }
+
+      .stock-name {
+        font-size: 0.875rem;
+        color: var(--medium-gray);
+        margin: 0;
+      }
+    }
+
+    .stock-actions {
+      display: flex;
+      gap: 0.5rem;
+
+      .btn-icon {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .stock-price {
+    margin-bottom: 1.5rem;
+
+    .current-price {
+      .price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--dark-gray);
+      }
+    }
+
+    .price-change {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+
+      .change-icon {
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .change-value,
+      .change-percent {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      &.positive {
+        color: var(--success-color);
+      }
+
+      &.negative {
+        color: var(--danger-color);
+      }
+    }
+  }
+
+  .stock-details {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.25rem 0;
+
+      .label {
+        font-size: 0.875rem;
+        color: var(--medium-gray);
+      }
+
+      .value {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--dark-gray);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .stock-card {
+    padding: 1rem;
+
+    .stock-header {
+      .stock-info {
+        .stock-symbol {
+          font-size: 1.125rem;
+        }
+      }
+    }
+
+    .stock-price {
+      .current-price {
+        .price {
+          font-size: 1.5rem;
+        }
+      }
+
+      .price-change {
+        .change-value,
+        .change-percent {
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    .stock-details {
+      .detail-row {
+        .label,
+        .value {
+          font-size: 0.8125rem;
+        }
+      }
+    }
+  }
+}
